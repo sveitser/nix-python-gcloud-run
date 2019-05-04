@@ -29,17 +29,17 @@ Create google cloud project.
     gcloud projects create $PROJECT_ID
     gcloud config set project $PROJECT_ID
 
-Enable billing
+Enable billing.
 
     gcloud services enable cloudbilling.googleapis.com
     gcloud alpha billing accounts list
 
-select desired account
+Select desired account.
 
     export ACCOUNT_ID=...
     gcloud alpha billing accounts projects link $PROJECT_ID --billing-account=$ACCOUNT_ID
 
-Enable Google Container Registry
+Enable Google Container Registry.
 
     gcloud services enable containerregistry.googleapis.com
 
@@ -57,6 +57,6 @@ Try out with the URL in the output.
     curl https://my-app-...run.app
     > Hello World!
 
-Clean up
+Clean up.
 
     gcloud projects delete $PROJECT_ID

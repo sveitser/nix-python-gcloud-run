@@ -1,33 +1,64 @@
 # nix-python-google-run
 
+This combines tutorials
+
+- Building a docker container using `nix` for a `python` app from
+  https://github.com/adisbladis/presentations/tree/master/nix-codeaholics-2018-08-08/live-demo-code
+- Google cloud run https://cloud.google.com/run/docs/quickstarts/build-and-deploy.
+
+Set a project ID for google cloud.
+
+    export PROJECT_ID=run-nix-python-example
+
+## Build docker image
+
 Build docker image with nixpkgs.
 
-    nix-build container.nix
-    docker load < /nix/store/jr1xs0fsnw3j54sxqk6931m047q4hi90-docker-image-my-app-0.0.1.tar.gz
+    nix-build container.nix --argstr project $PROJECT_ID
 
-Can be run with
+Import the docker image shown in the output.
 
-    docker run -it my-app-0.0.1:jr1xs0fsnw3j54sxqk6931m047q4hi90
+    docker load < /nix/store/...image-my-app-0.0.1.tar.gz
 
-Enable Google Container Registry API in Cloud Console at
-https://console.cloud.google.com/apis/api/containerregistry.googleapis.com/overview?project=[PROJECT-ID]
+It can be run locally with
+
+    docker run -it gcr.io/$PROJECT_ID/my-app
+
+## Deploy to gcloud run
+
+Create google cloud project.
+
+    gcloud projects create $PROJECT_ID
+    gcloud config set project $PROJECT_ID
+
+Enable billing
+
+    gcloud services enable cloudbilling.googleapis.com
+    gcloud alpha billing accounts list
+
+select desired account
+
+    export ACCOUNT_ID=...
+    gcloud alpha billing accounts projects link $PROJECT_ID --billing-account=$ACCOUNT_ID
+
+Enable Google Container Registry
+
+    gcloud services enable containerregistry.googleapis.com
 
 Push to google cloud.
 
     gcloud auth docker
-    docker push gcr.io/[PROJECT-ID]/[IMAGE]
+    docker push gcr.io/$PROJECT_ID/my-app
 
 Run with google cloud run.
 
-    gcloud beta run deploy --image gcr.io/[PROJECT-ID]/my-app
+    gcloud beta run deploy --image gcr.io/$PROJECT_ID/my-app
 
-Try out with the URL shown.
+Try out with the URL in the output.
 
     curl https://my-app-...run.app
     > Hello World!
 
-Delete the service
+Clean up
 
-    gcloud beta run services delete my-app
-
-To avoid charges also delete the docker image from the registry.
+    gcloud beta delete $PROJECT_ID

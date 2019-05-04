@@ -1,10 +1,12 @@
 with (import <nixpkgs> {});
 
+{ project ? "nix-python-run-example" }:
+
 let
   pkg = import ./default.nix;
 
 in dockerTools.buildImage {
-  name = "gcr.io/nix-python-run-example/my-app";
+  name = "gcr.io/${project}/my-app";
   tag = "latest";
   config = {
     Cmd = [

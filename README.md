@@ -1,5 +1,3 @@
-# nix-python-google-run
-
 This combines tutorials
 
 - Building a docker container using `nix` for a `python` app from

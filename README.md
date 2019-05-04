@@ -61,4 +61,4 @@ Try out with the URL in the output.
 
 Clean up
 
-    gcloud beta delete $PROJECT_ID
+    gcloud projects delete $PROJECT_ID

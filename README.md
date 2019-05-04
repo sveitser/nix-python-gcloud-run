@@ -25,3 +25,9 @@ Try out with the URL shown.
 
     curl https://my-app-...run.app
     > Hello World!
+
+Delete the service
+
+    gcloud beta run services delete my-app
+
+To avoid charges also delete the docker image from the registry.

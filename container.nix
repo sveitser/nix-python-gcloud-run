@@ -4,7 +4,8 @@ let
   pkg = import ./default.nix;
 
 in dockerTools.buildImage {
-  name = pkg.name;
+  name = "gcr.io/nix-python-run-example/my-app";
+  tag = "latest";
   config = {
     Cmd = [
       # Note: "${pkg}" expands to /nix/store path of pkg

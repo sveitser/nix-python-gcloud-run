@@ -9,6 +9,7 @@ in mkShell {
       pyls-black
       pyls-isort
       python-language-server
+      gunicorn
     ]))
     pkg
   ] ++ pkg.propagatedBuildInputs;
